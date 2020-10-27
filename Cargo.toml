@@ -1,0 +1,5 @@
+[workspace]
+members = [
+	"r2d2_example",
+	"pg_asn"
+]
