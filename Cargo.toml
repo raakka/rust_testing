@@ -1,5 +1,6 @@
 [workspace]
 members = [
 	"r2d2_example",
-	"pg_asn"
+	"pg_asn",
+	"dumb_example_pg"
 ]

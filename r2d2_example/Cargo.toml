@@ -16,3 +16,6 @@ r2d2 = "0.8"
 r2d2_sqlite = "0.14"
 rusqlite = "0.21"
 
+r2d2_postgres = "0.16"
+postgres = "0.18.1"
+
