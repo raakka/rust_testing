@@ -69,7 +69,6 @@ mod errors [
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Queries
 
-
 mod db {
 	use crate::{errors::MyError, models::Akamai};
 	use deadpool_postgres::Client;
@@ -96,5 +95,22 @@ mod db {
 		.ok_or(MyError::NotFound)
 	}
 }
-)
-}	 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Handlers
+
+mod handlers {
+    use crate::{ db, errors::MyError, models::Akamai };
+    use actix_web::{ web, Error, HttpResponse };
+    use deadpool_postgres::{ Client, Pool };
+
+    pub async fn serve_cookie (
+        cookie: web::Json<Akamai>,
+        db_deadpool: web::Data<Pool>,
+    ) -> Result<HttpResponse, Error> {
+        let cookie_inf: cookie.into_inner();
+        let client: Client = db_deadpool.get().await.map_err(MyError::PoolError)?;
+        let generated_cookie = db::get_cookie(&client, cookie_inf).await?;
+        Ok(HttpResponse::Ok().json(generated_cookie)
+    }
+}
