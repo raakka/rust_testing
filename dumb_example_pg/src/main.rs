@@ -38,7 +38,7 @@ mod models {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Custom Error Handling
 
-mod errors [
+mod errors {
 	use acrtix_web::{HttpResponse, ResponseError};
 	use deadpool_postgres::PoolError;
 	use derive_more::{Display, From};
@@ -114,3 +114,29 @@ mod handlers {
         Ok(HttpResponse::Ok().json(generated_cookie)
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Main HTTPSERVER!
+
+use actix_web::{ web, App, HttpServer };
+use dotenv::dotenv;
+use handler::serve_cookie;
+use tokio_postgres::NoTls;
+
+#[actix_web::main]
+aysnc fn main() -> std::io::Result<()> {
+    dotenv().ok();
+    
+    let config =  crate::config::Config::from_env().unwrap();
+    let pool = config.pg.create_pool(NoTls).unwrap();
+
+    let server = HttpServer::new( move || {
+        App::new()
+            .data(pool.clone())
+            .service(web::resource("/akamai").route(web::post().to(serve_cookie)))
+        })
+    .bind(config.server_addr.clone())?
+    .run();
+    server.await
+    }
+

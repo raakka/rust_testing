@@ -630,6 +630,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "134951f4028bdadb9b84baf4232681efbf277da25144b9b0ad65df75946c422b"
 
 [[package]]
+name = "dumb_example_pg"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "config",
+ "deadpool-postgres",
+ "derive_more",
+ "dotenv",
+ "serde 1.0.117",
+ "tokio-pg-mapper",
+ "tokio-pg-mapper-derive",
+ "tokio-postgres 0.5.5",
+]
+
+[[package]]
 name = "either"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
